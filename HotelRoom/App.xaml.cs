@@ -31,7 +31,7 @@ namespace HotelRoom
                     new DateTime(2000, 1, 2)));
 
                 hotel.MakeReservation(new Reservation(
-                    new RoomID(https://www.youtube.com/watch?v=dgJ1nS2CLpQ1, 3),
+                    new RoomID(1, 3),
                     "SingletonSean",
                     new DateTime(2000, 1, 1),
                     new DateTime(2000, 1, 4)));
