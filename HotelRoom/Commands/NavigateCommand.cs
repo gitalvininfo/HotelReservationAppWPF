@@ -1,4 +1,7 @@
-﻿using System;
+﻿using HotelRoom.Services;
+using HotelRoom.Stores;
+using HotelRoom.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +11,16 @@ namespace HotelRoom.Commands
 {
     public class NavigateCommand : CommandBase
     {
+        private readonly NavigationService _navigationService;
+
+        public NavigateCommand(NavigationService navigationService)
+        {
+            _navigationService = navigationService;
+        }
+
         public override void Execute(object? parameter)
         {
+            _navigationService.Navigate();
         }
     }
 }
