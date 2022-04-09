@@ -1,5 +1,6 @@
 ﻿using HotelRoom.Exceptions;
 using HotelRoom.Models;
+using HotelRoom.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -42,6 +43,13 @@ namespace HotelRoom
             //}
 
             //IEnumerable<Reservation> reservations = hotel.GetReservationsForUser("SingletonSean");
+
+            MainWindow = new MainWindow()
+            {
+                DataContext = new MainViewModel()
+            };
+
+            MainWindow.Show();
 
 
             base.OnStartup(e);
