@@ -17,36 +17,20 @@ namespace HotelRoom
     public partial class App : Application
     {
 
+        private readonly Hotel _hotel;
+
+        public App()
+        {
+            _hotel = new Hotel("SingletonSean Suites");
+        }
+
         protected override void OnStartup(StartupEventArgs e)
         {
-            //Hotel hotel = new Hotel("SingletonSean Suites");
-
-
-            //try
-            //{
-
-            //    hotel.MakeReservation(new Reservation(
-            //        new RoomID(1, 3),
-            //        "SingletonSean",
-            //        new DateTime(2000, 1, 1),
-            //        new DateTime(2000, 1, 2)));
-
-            //    hotel.MakeReservation(new Reservation(
-            //        new RoomID(1, 3),
-            //        "SingletonSean",
-            //        new DateTime(2000, 1, 1),
-            //        new DateTime(2000, 1, 4)));
-            //} 
-            //catch (ReservationConflictException ex)
-            //{
-
-            //}
-
-            //IEnumerable<Reservation> reservations = hotel.GetReservationsForUser("SingletonSean");
+            
 
             MainWindow = new MainWindow()
             {
-                DataContext = new MainViewModel()
+                DataContext = new MainViewModel(_hotel)
             };
 
             MainWindow.Show();
@@ -56,3 +40,30 @@ namespace HotelRoom
         }
     }
 }
+
+
+
+//Hotel hotel = new Hotel("SingletonSean Suites");
+
+
+//try
+//{
+
+//    hotel.MakeReservation(new Reservation(
+//        new RoomID(1, 3),
+//        "SingletonSean",
+//        new DateTime(2000, 1, 1),
+//        new DateTime(2000, 1, 2)));
+
+//    hotel.MakeReservation(new Reservation(
+//        new RoomID(1, 3),
+//        "SingletonSean",
+//        new DateTime(2000, 1, 1),
+//        new DateTime(2000, 1, 4)));
+//} 
+//catch (ReservationConflictException ex)
+//{
+
+//}
+
+//IEnumerable<Reservation> reservations = hotel.GetReservationsForUser("SingletonSean");
