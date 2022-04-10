@@ -1,8 +1,13 @@
-﻿using HotelRoom.Exceptions;
+﻿using HotelRoom.DbContexts;
+using HotelRoom.Exceptions;
 using HotelRoom.Models;
 using HotelRoom.Services;
+using HotelRoom.Services.ReservationConflictValidators;
+using HotelRoom.Services.ReservationCreators;
+using HotelRoom.Services.ReservationProviders;
 using HotelRoom.Stores;
 using HotelRoom.ViewModels;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -18,18 +23,31 @@ namespace HotelRoom
     /// </summary>
     public partial class App : Application
     {
-
+        private const string CONNECTION_STRING = "Data Source=reservroom.db";
         private readonly Hotel _hotel;
         private readonly NavigationStore _navigationStore;
+        private ReservoomDbContextFactory _reservoomDbContextFactory;
 
         public App()
         {
-            _hotel = new Hotel("SingletonSean Suites");
+            _reservoomDbContextFactory = new ReservoomDbContextFactory(CONNECTION_STRING);
+
+            IReservationProvider reservationProvider = new DatabaseReservationProvider(_reservoomDbContextFactory);
+            IReservationConflictValidator reservationConflictValidator = new DatabaseReservationConflictValidator(_reservoomDbContextFactory); ;
+            IReservationCreator reservationCreator = new DatabaseReservationCreator(_reservoomDbContextFactory);
+            ReservationBook reservationBook = new ReservationBook(reservationProvider, reservationCreator, reservationConflictValidator);
+            _hotel = new Hotel("SingletonSean Suites", reservationBook);
             _navigationStore = new NavigationStore();
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
+
+
+            using(ReservoomDbContext dbContext = _reservoomDbContextFactory.CreateDbContext())
+            {
+                dbContext.Database.Migrate();
+            }
 
             _navigationStore.CurrentViewModel = CreateReservationViewModel();
 
@@ -51,7 +69,7 @@ namespace HotelRoom
 
         private ReservationListingViewModel CreateReservationViewModel()
         {
-            return new ReservationListingViewModel(_hotel, new NavigationService(_navigationStore, CreateMakeReservationViewModel));
+            return ReservationListingViewModel.LoadViewModel(_hotel, new NavigationService(_navigationStore, CreateMakeReservationViewModel));
         }
     }
 }

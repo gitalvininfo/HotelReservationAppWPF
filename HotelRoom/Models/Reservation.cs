@@ -23,14 +23,14 @@ namespace HotelRoom.Models
             EndTime = endTime;
         }
 
-        public bool Conflicts(Reservation reservation)
-        {
-            if(reservation.RoomID != RoomID)
-            {
-                return false;
-            }
+        //public bool Conflicts(Reservation reservation)
+        //{
+        //    if(reservation.RoomID != RoomID)
+        //    {
+        //        return false;
+        //    }
 
-            return reservation.StartTime < EndTime && reservation.EndTime > StartTime;
-        }
+        //    return reservation.StartTime < EndTime && reservation.EndTime > StartTime;
+        //}
     }
 }
